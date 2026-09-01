@@ -1,0 +1,4 @@
+Today In Morning take Session of Devops Roadmap
+After that Watched Tutorial of Github to EC2
+Also done the practical & Setup of Github account with EC2 Machine
+Thats All for Today & Tommorrow I will start practicing about linux
