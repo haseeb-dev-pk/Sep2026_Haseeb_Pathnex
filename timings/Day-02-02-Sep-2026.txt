@@ -1,0 +1,18 @@
+Today I learned about Linux Commands Like
+ls, ll, ll -a, ls -a  That Command will show the content which is present in Directory
+cd, cd .., cd dir-name  That command will take you to the directory where you want to be
+mkdir name That command will help you to create directory in the linux system
+rm, rm -r, rm -rf That Command is used to remove files or Directories
+cp that command is used to make a copy of the file & directory
+pwd That will print your current system location in next line like in which folder you are present
+mv That command will help you to move the file to another location & that can also rename the file
+touch this command will create a single or multiple empty files & also can update the time of files\
+cat is used to create & view the content of the file
+head that command is used to display first 10 or few lines of the file
+tail that command is used to display last 10 or few lines of the file
+ln -s, ls its is used to create links & links are of two types 1 is hard link & other is a soft link hard link is created for a backup
+find that command is used to search for files & directories
+
+Also I Watched the tutorials of Linux & 
+done my practice on ec2 machine for about 30 to 45 minutes
+Tomorrow i will be learning more commands of the linux
