@@ -1,0 +1,29 @@
+Ansible:
+- name: Install Apache & Start Service                  (Just a name to define what we are going to do)
+  hosts: all											(Servers connected to main i.e. webservers, dataservers etc)
+  become: yes											(Root user Prevelage)
+  tasks:												(An Individual task a playbook is going to do there can be multiple tasks)
+    - name: Install apache								(To know what we are going to do)
+	  yum:												(Package Manager)
+	    name: httpd										(Package name like httpd, nginex)
+		state: present									(Have to be install its mandetory)
+	
+    - name: Start Apache								(To know what we are going to do)
+	  yum:												(Package Manager)
+	    name: httpd										(Tell Server which service to control)
+		state: started									(Start Apache Now)	
+		enabled: yes									(It automatecally starts whenever server boots)
+
+Terraform:
+provider "aws" {										(Provider detail)
+  region = "us-east-1"									(Region detail)
+}
+														(aws_instance is type of resource)
+resource "aws_instance" "PathnexEC2" {					(This Tell to create EC2 Instance)(Pathnex is Terraform Local Name)
+  ami = "ami-0abcd1234abcd1234"							(AMI = Amazon Machine Image)
+  instance_type = "t3.medium"							(To tell hardware capacity)
+  tags = {												(That part is usefull for organizing & identifying resources)
+    Name = "Pathnex-T3"									(Name of EC2 Machine)
+  }
+}
+
