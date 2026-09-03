@@ -1,0 +1,70 @@
+Ansible
+-name: Install & Enable Nginx   			(This line is just for the Name so any one can understand what we are doing)
+  hosts: all						(This line is for which server you want to do the job)
+  become: yes						(Use to allow Ansible the root permissions)
+							(Blank as YAML file need)
+  tasks:						(An Individual job that Ansible have to do)
+    - name: Install nginx				(A task name so we know what we are doing)
+      yum:						(An Ansible Module used to run Package)
+		name: nginx				(This tells Ansible which package we want write now we want nginx)
+		state: present				(This Means that Make sure Nginx is Installed)
+							(Blank as YAML file need)
+    - name: Enable nginx				(Again the name we can identify what we are doing in that)
+	  services:					(It wants to manage Linux Services)
+	  name: nginx					(Which package we want to manage)
+	  state: started				(it Means to Start Nginx Right now)
+	  enabled: yes					(This means to autometicaly Start Nginx on boot)
+
+
+provider "aws" {					(Its Like i want to Create & manage Resources on AWS)
+  region = "us-east-1"					(Region Selection on AWS)
+}
+
+Terraform
+resource "aws_instance" "PathnexEC2" {			(aws_instance means AWS EC2 Instance while PathnexEC2 is terraform local name for this resource
+  ami = "ami-0abcd1234abcd1234"				(AMI = Amazon Machine Number)
+  instance_type = "r5.2xlarge"				(It Determine the Size & Capacity of The EC2 Machine)
+  
+  tags = {
+    Name = "Pthnex-Server"					(The name of ec2 machine)
+	Enviroment = "Training"					(What the ec2 machineis going to use for)
+	Owner = "PathnexStudent"				(Who is going to manae the Instance/Machine)
+  }
+}
+
+Kubern8s
+apiVersion: apps/v1							(Which API Version use to run the resource)
+kind: Deployment							(This tells kubern8s what you are creating)
+metadata:								(Contain info about the resource)
+  name: pathnex-deployment						(Name of the deployment can be any name)
+spec:									(What do i want this deployment to look like)
+  replicas: 2								(This is Very imp which tells k8s to have 2 pods running if pods craches it will create another pod)
+  selector:								(This tells which pod belong to me)
+	matchLabels:							
+	  app: pathnex-app						
+  template:								(Like when create a pod it will look like this)
+    metadata:								(That 3 lines is to give lable to pod)
+	  labels:								
+	    app: pathnex-app					
+	spec:								(That spec is diff from uper one here you will tell them what to run inside each pod)
+	  containers:							(To give container to port port can have multiple containers)
+	    - name: app							(can be any name)
+		  image: nginx						(Docker Image)
+		  ports:						(Will run on that port)
+		    - containerPort: 80			
+
+
+Shell Script:
+#!/bin/bash								(Called Shebang to run using Bash Shell)
+df -h									(disk filesystem using human readability)
+
+Docker
+# Docker Images & Containers				
+docker pull ubuntu							(Will pull ubuntu image from docker hub)
+docker images								(will list the images?
+docker ps -a								(To See all docker containers even sleeping one)
+
+# Docker File								
+From ubuntu:22.04							(Start new image using Ubuntu as the base image)
+RUN apt update								(run this command to update ubuntu to latest version)
+CMD ["echo", "Hello pathnex"]						(That Will print the Message)
