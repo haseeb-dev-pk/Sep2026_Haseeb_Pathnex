@@ -1,0 +1,24 @@
+Today Learn About Sudo Permissions
+Users
+Groups & Others Permissions How to do them & also how to edit them using chmod
+if we wanna change the owner we will use chown
+for group will change use chgrp
+Also Practice some more basic commands like , ll, ll -atlh, mv & many more
+Also there are Read=4, Write=2 & Execute=1 these are the permissions which were used for user, group & others
+Also learn that - alone & -- together is different actions
+Also learn about file editors like vi, vim & nano
+To learn content of the file we can use cat command
+To copy a file use cp
+to move or rename a file or dir use mv
+To hide a file or dir use . before name
+to delete a file use rm
+tail is used to view last some line of the file like 10, for more write -10 like after - enter number you wanna print
+head is used to view first some files of the file like 10, for more write -10 like after - enter number you wanna print
+to see live you can use -f
+if wanna add any thing to file write echo "Something" >> filename
+The very interesting command Which is links there are two types like Hard link & soft link
+for links we can use ln & to make soft link we can add -s 
+
+
+So in total i have learn & practice for 4 hours today
+& after that I have spend like 1.5 hour on the coding task of git repo
