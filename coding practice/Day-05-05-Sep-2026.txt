@@ -1,0 +1,93 @@
+Jenkins CI/CD: with git integration & Testing
+
+pipeline 																	(Declirative Pipeline)
+    agent any 																	(Jenkins will allow task to any agent available)
+	stages { 																(Contain All Jobs/ Stages)
+	    stage('CLONE REPOSITORY') { 													(First Stage named Clone REPOSITORY)
+		    steps {															(List of actions to execute)
+			    echo 'HTTPS://GITHUB.COM/PATHNEX/L2.GIT										(Print the text in console)
+			}
+		}
+		stage('BUILD') {														(Second Stage named Build)
+		    steps {															(List of actions to execute)
+			    echo 'BUILDING PROJECT FROM GIT REPOSITORY'										(Print the text in console)
+			}
+		}
+		stage('TEST') {															(Third Stage named Test)
+		    steps {															(List of actions to execute)
+			    echo 'RUNNING UNIT TESTS'												(Print the text in console)
+
+		}																	
+		stage('DEPLOY') {														(Forth Stage named Deploy)
+		    steps {															(List of actions to execute)
+			    echo 'Deploying application'											(Print the text in console)
+			}
+		}
+	}
+}
+
+GitLab CI/CD: With Docker BUILD
+
+stages:																		(Keyword that contains the phases of the pipeline)		
+  - build																	(Phase 1)			
+  - push																	(Phase 2)			
+  - deploy																	(Phase 3)			
+  
+build:																		(The name of the 1st Job)		
+  stage: build																	(Stage Assignment)				
+  script:																	(Keyword which contain all the commands inside it)			
+    - docker built -t pathnex-app .														(Script/Shell Command)		
+					
+push:																		(The name of the 2st Job)		
+  stage: push																	(Stage Assignment)				
+  script:																	(Keyword which contain all the commands inside it)			
+    - docker push pathnex-app															(Script/Shell Command)	
+
+deploy:																		(The name of the 3st Job)		
+  stage: deploy																	(Stage Assignment)				
+  script:																	(Keyword which contain all the commands inside it)			
+	- kubectl apply -f kubernetes/deployment.yaml												(Script/Shell Command)	
+	
+Ansible Create User & Set Permission:																	
+- name: Create a new user															(Name just for Human Readability)				
+  hosts: all																	(Playbook will run on all hosts/servers)
+  become: yes																	(Root Previalage)	
+  tasks:																	(An Individual task a playbook is going to do there can be multiple tasks)
+    - name: Create User																(Just a name for reference)			
+	  user:																	(User Manager)
+	    name: pathnex															(name of user)			
+		state: present															(Have to be created)			
+		shell: /bin/bash														(Default login shell)				
+	-name: Set permissions for the user													(Name for Reference)							
+	 file:																	(file module)
+	   path: /home/pathnex															(Will apply the changes there)
+	   owner: pathnex															(Owner Allocation to user)
+	   group: pathnex															(Group Allocation to user)
+	   mode: '0755'																(Default permissions of the dir)
+
+Terraform - EC2 with tags & Volumn:														
+resource "aws_instance" "PathnexEC2" {														(AWS Instance type, Local Terraform Name)				
+  ami = "ami-0abcd1234abcd1234"															(Amazon Machine Image)		
+  instance_type = "t2.medium"															(Size/Type of EC2 Instance)		
+  
+  tags = {																	(Tag Block)
+    Name = "Pathnex-Server"															(Used to Identify & Organize AWS resource)
+  }(
+  
+  ebs_block_device {																(Tell Terraform to Configure EBS Volume Disk)
+    device_name = "/dev/sdh"															(Name in the AWS)		
+	volume_size = 50															(Disk Size)
+  }
+}
+
+Docker Python Application:
+print("Hello Pathnex")																(App.py file)		
+
+# Dockerfile
+FROM python:3.11																(Make Python image from container registry)	
+WORKDIR /opt/pathnex/python-app															(Sets Working directory inside the container)
+COPY app.py /opt/pathnex/python-app														(This copy your local app.py to docker image)
+CMD ["python", "/opt/pathnex/python-app/app.py"]												(Default commands to run when container starts)
+
+# Real Path
+/opt/pathnex/python-app																(Directory inside the container)
