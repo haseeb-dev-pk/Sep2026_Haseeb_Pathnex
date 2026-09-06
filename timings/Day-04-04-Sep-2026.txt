@@ -1,0 +1,16 @@
+Today we learn about how to create an EC2 file using terrafoam & how to trobleshott it 
+Also learn about IDP provider whixh is known as identity provider
+like work os, keyclak for open source, Role Based Access will be given in real industry
+Key Management Tools for Multiiple Users work like password management
+IdP is "Who you are" & Password manager is "What Password should i Use?"
+We Learn another Important Thing about Absolute path & Relevant Path
+Also learn find command to search files & directories
+If you want to double the content use sed command
+sed vs awk Imp for interview
+Also learn about du command which can track your disk usage
+umask to set default file permission by default its value is 022
+gzip command is used to compress the file or directory
+also learn top & ps command 
+Learn kill  command to kill the running process
+
+Practice & Watch lecture for around 4.5 Hour

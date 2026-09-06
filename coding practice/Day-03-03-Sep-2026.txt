@@ -9,7 +9,7 @@ Ansible:
 		state: present									(Have to be install its mandetory)
 	
     - name: Start Apache								(To know what we are going to do)
-	  yum:												(Package Manager)
+	  service:												(Package Manager)
 	    name: httpd										(Tell Server which service to control)
 		state: started									(Start Apache Now)	
 		enabled: yes									(It automatecally starts whenever server boots)
@@ -26,4 +26,46 @@ resource "aws_instance" "PathnexEC2" {					(This Tell to create EC2 Instance)(Pa
     Name = "Pathnex-T3"									(Name of EC2 Machine)
   }
 }
+
+Kubernetes:
+apiversion: apps/v1                                     (K8s API version used for this resource)
+kind: ReplicaSet										(Type of resource i want to create)
+metadata:												(Contain info about resource)
+  name: pathnex-replicaset								(Just a name which can be anyone)
+spec: 													(Desired setup will be under spec)
+  replicas: 3											(3 pods for the package we want)
+  selector:												(It tells which pod to manage)
+    matchLables:										
+	app: pathnex-app									(Appis tag key & pathnex-app is valve)
+  template:												(Blueprint use to create pod)
+    metadata:											
+	  lables:											
+	    app: pathnex-app								(Each pod Lable)
+	spec:
+	  containers:										(List the containers inside each pod)
+	    - name: app										(Name of containers)
+		  image: nginx									(Container image available open source)
+		  ports:										
+		    - containerport: 80							(Port the image is going to use)
+
+Shell Script:
+#!/bin/bash												(This is Shebang)
+echo "Current user: $(whoami)"							(Print Whoami using Command Substitution)
+echo "Current user groups: $(groups)"					(list groupsof the current user)
+
+Docker:													
+# Docker file for Nginx Web Server						
+From nginx:latest										(Starts with already available image)
+Copy index.html /usr/share/nginx/html/index.html		(Copy index.html into image)
+
+#HTML													
+<h1>Hello Pathnex<h1>									(Basic HTML Command)
+
+#Bash													
+# Real Pathnex											
+/usr/share/nginx/html									(Container Direstory)
+
+#Bash
+docker build -t pathnex-nginx .							(It will build Docker image using dockerfile)
+docker run -d -p 80:80 pathnex-nginx					(It Needs to run the container on port 80)
 

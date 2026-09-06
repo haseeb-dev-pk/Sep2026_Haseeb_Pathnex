@@ -1,0 +1,98 @@
+CI/CD Using Jenkins:
+pipeline {															(Declarative Pipeline)(Starts the complete pipeline defination)
+	agent any														(Run on any available agent)
+	stages {														(Contain All stages)
+		stage('Build') {												(First Stage named Build)
+			steps {													(List of actions to execute)
+				echo 'Building projects'									(Print the text in console)
+			}
+		}
+		stage('Test') {													(Second Stage named Test)
+			steps {													(List of actions to execute)
+				echo 'Running tests'										(Print the text in console)
+			}
+		}
+		stage('Deploy') {												(Third Stage named Deploy)
+			steps {													(List of actions to execute)
+				echo 'Deploying application'									(Print the text in console)
+			}
+		}
+	}
+}
+
+
+GitLab CI/CD - Basic Pipeline
+stages:																(Keyword that list the phases of the pipeline)
+  - build															(Phase 1)
+  - test															(Phase 2)
+  - deploy															(Phase 3)
+
+build:																(Name of the Job)
+  stage: build															(Stage assignment)
+  script:															(Keyword)
+    - echo "Building project"													(Script/Shell Commands)
+	
+test:																(Name of the Job)
+  stage: test															(Stage assignment)
+  script:															(Keyword)
+    - echo "Running tests"													(Script/Shell Commands)
+	
+deploy:																(Name of the Job)
+	stage: deploy														(Stage assignment)
+	scipt:															(Keyword)
+	  - echo "Deploying Application"											(Script/Shell Commands)
+
+Ansible:															(Playbooks)
+- name: Install & Confiqure Nginx												(Just a name to define what we are going to do)
+  hosts: all															(Servers)
+  become: yes															(Root Privelage)
+  tasks:															(An Individual task a playbook is going to do there can be multiple tasks)
+    - name: Install Nginx													(To know what we are going to do)
+	  yum:															(Package Installer)
+	    name: nginx														(Name of package we want)
+		state: present													(It have to be installed)
+	- name: Configure nginx													(To know what we are going to do)
+	  template:														(Module that copy a file to the server)
+	    src: nginx.conf.j2													(Source file)
+		dest: /etc/nginx/nginx.conf											(Distination)
+	-name: Start nginx service												(To know what we are going to do)
+	 service:														(Control Service)
+	   name: nginx														(Service Name)
+	   state: started													(It will start after the command)
+	   enabled: yes														(Automatically start whenever server boots)
+
+Terraform:
+resource "aws_security_group" "Pathnex" {											(Resourse Type, & Terraform Local Name)
+  name = "Pathnex Security"													(Security Group name in AWS)
+  description = "Allow SSH and HTTP"												(Human eadable note)
+  ingress {((															(Inbound rule block)(Incoming Trafic)
+    from_port = 22														(Starting port number)
+	to_port =22														(Ending port number)
+	protocol = "tcp"													(Network Protocol)
+	cidr_blocks = ["0.0.0.0/0"]												(Any ipv4 address of the internet)
+  }
+  
+  ingress {																
+    from_port = 80														(Starting port number)
+	to_port = 80														(Ending port number)
+	protocol = "tcp"													(Network Protocol)
+	cidr_blocks = ["0.0.0.0/0"]												(Any ipv4 address of the internet)
+  }
+  
+  egress {															(OutGoing Trafic)
+    from_port = 0														(Starting port number)
+	to_port = 0														(Ending port number)
+	protocol = "-1"														(Network Protocol)
+	cidr_blocks = ["0.0.0.0/0"]												(Any ipv4 address of the internet)
+  }
+}
+
+Docker
+# Apache Container													
+FROM ubuntu:22.04														(Pick image from Container Registry)
+RUN apt update && apt install apache2 -y											(Contain container & Install Package)
+RUN echo "Hello Pathnex" > /var/www/html/index.html										(Linux command run by docker)
+CMD ["apachectl", "-D", "FOREGROUND"]												(Container startup Command)
+
+# Bash Real Path
+/var/www/html															(File path inside of the container)
