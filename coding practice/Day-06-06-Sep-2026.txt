@@ -1,0 +1,77 @@
+Ansible Install Docker:
+
+-name: Install Docker													(Name as a reference for Human Readability)			
+ hosts: all														(Playbook will run on all hosts/servers)
+ become: yes														(Root Prevalage)	
+ tasks:															(An Individual Tasks a playbook is going to manage/do)
+   - name: Install Docker												(For Human Reference)				
+     yum:														(Package Installer)
+	   name: Docker													(Name of a Package)
+	   state: present												(Have to be installed at that server)			
+   - name: Start Docker													(Name for Human Reference)			
+     services:														(Seveice module in Ansible)
+	   name: Docker													(Name of Service?
+	   state: started												(Will start after running that command)
+	   enabled: yes													(Will automatically start after boot on all servers)
+
+Terraform Provisioning EC2 with VPS:	
+resource "aws_vpc" "main" {												(Manage AWS Resource)
+  vpc_id = aws_vps.main.id												(Overall Private network)
+  cidr_block = "10.0.0.0/16"												(IP Address range of VPC)
+}
+
+resource "aws_instance" "pathnex_ec2" {											(Manage AWS Resource)
+  ami = "ami-0abcd1234abcd1234"												(Amazon Machine Image)
+  instance_type = "t3.medium"												(Region Specification)
+  subnet_id = aws_subnet.main.id											(Smaller network inside the VPS)	
+  tags = {																
+    Name = "Pathnex-EC2"												(Name of EC2 Machine on AWS)
+  }
+}
+
+
+Kubernetes Pod with Volume Mount:
+apiVersion: v1														(A Version we want to run our resourse)
+kind: Pod														(specifies the type of resource to create)
+metadata:														(Info about the resource)
+  name: pathnex_pod													(Can be any name)
+spec: 															(All the jobs of Pob will be run in spec)
+  containers:														(Tell k8s to what container to run)
+    - name: web														(can be any name)
+	  image: nginx													(It will create a container using image)
+	  volumeMounts:													(distination to put the file will define in that)
+	    - mountPath: /usr/share/nginx/html										(Distination of container)							
+		name: html-volumn											(it have to be same as specified in volumes)			
+  volumes:														(Define the actual store resource)
+    - name: html-volumn													(Can be any name)
+	  hostPath:													(Source of the storage)
+	    path: /data													(folder location in host path)
+		type: Directory												(Folder)
+
+Shell Script Check for Running Services:
+#!/bin/bash														(Shabang)	
+services=("nginx" "docker" "httpd")											(Variable name for an array)							
+for service in "{services[@]}"												(Key line)						
+do															(job)
+  if systemctl is-active --quite $service; then										(It is a question)										
+    echo "$service is running"												(Print Command)						
+  else															(Else)
+    echo "$service is not running"											(Print Command)					
+  fi															(ending of if command)
+done															(ends the loop)
+
+
+Docker
+#Node.js Applicastion (JavaScript)															
+console.log ("Hellow Pathnex")												(JavaScript)				
+
+#Docker File
+FROM node:18														(Image Pull)
+WORKDIR /opt/pathnex/node-app												(Make Directory)	
+COPY app.js /opt/pathnex/node-app/											(Copy app in dir)					
+CMD ["node", "/opt/pathnex/node-app/app.js"]										(Automaticaly run the comand swhen container starts)				
+
+#Real Path
+/opt/pathnex/node-app													(On Server)
+	
+
