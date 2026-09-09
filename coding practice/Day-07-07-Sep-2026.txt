@@ -1,0 +1,47 @@
+Ansible - Setup Nginx with Custom Config
+- name: Setup Nginx with Custom Config									(Just the name for Human Refferance)							
+  hosts: all												(Playbook will run on all hosts/servers)	
+  become: yes												(Root Privalage)
+  tasks:												(An Individual Task a Playbook is going to do)
+    - name: Install nginx										(Name for Human Readability)				
+	  yum:												(Package Installer)
+	    name: nginx											(Define Package Name)
+		state: present										(It have to be installed on all Servers)
+	- name: Copy custom nginx.conf									(Name for Human Readability)						
+	  copy:												(Copy Module)
+	    src: nginx.conf										(Source File)			
+		dest: /etc/nginx/nginx.conf								(Distination file)						
+	-name: Start nginx service									(Name for Human Readability)					
+	 service:											(Service Module)
+	   name: nginx											(Name of Service)		
+	   state: started										(Service will Start After This command)		
+	   enabled: yes											(Will start always when server root)
+
+Terraform - Provision EC2 with IAM Role:
+resource "aws_iam_role" "ec2_role" {									(Manage AWS Resource)(IAM Role Define)		
+  name = "pathnex_ec2_role"										(Name of IAM role in AWS)
+  assume_role_policy = jsonencode({									(Who is Allowed to use this IAM role))
+    Version = "2012-10-17"										(IAM Policy Language Version)
+	Statement = [{											(Contain Actual Permisiion inside of that)
+	  Action = "sts:AssumeRole"									(What Action is Allowed)
+	  Effect = "Allow"										(Means the Action is permitted or not)
+	  Principal = {											(Who is Allowed to assume this role)
+	    Service = "ec2.amazonaws.com"								(The Instance or user name will be here)
+	  }
+	}]
+  })
+}
+
+resource "aws_iam_instance_profile" "ec_profile" {							(Manage AWS Resource)			
+  name = "pathnex_ec2_profile"										(Name of Instance profile in AWS)
+  role = aws_iam_role.ec2_role.name									(Attach IAM Role to Instance Profile)
+}
+
+resource "aws_instance" "pathnex_ec2" {									(Manage AWS Resource)
+  ami = "ami-0abcd1234abcd1234"										(AMI Clarification)
+  instance_type = "t2.medium"										(Instance Server Type)
+  iam_instance_profile = aws_iam_instance_profile.ec_profile.name					(Instance Profile Name)
+  tags = {												(To Identify Resource)
+    Name = "Pathnex-EC2"										(Instance Name in AWX)
+  }
+}
