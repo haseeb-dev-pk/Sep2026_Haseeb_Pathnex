@@ -45,3 +45,41 @@ resource "aws_instance" "pathnex_ec2" {									(Manage AWS Resource)
     Name = "Pathnex-EC2"										(Instance Name in AWX)
   }
 }
+
+Kubernetes - ConfigMap & Secret Management
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pathnex-config
+data:
+  app.properties: |
+  key=value
+
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pathnex-secret
+type: Opaque
+data:
+  password: 0abcd1234abcd1234
+
+Shell Script - Archive Logs
+#!/bin/bash
+tar -czf /var/log/archived_logs.tar.gz /var/log/*.login
+
+Docker Java Application:
+#JavaScript
+class Hello {
+	public static void main(String[] args) {
+		System.out.println("Hello Pathnex")
+	}
+}
+
+#Docker file
+FROM openjdk:17
+WORKDIR /opt/pathnex/java-app
+COPY Hello.java /opt/pathnex/Hello.java
+RUN javac /opt/pathnex/java-app/Hello.java3
+CMD ["java", "-cp", "/opt/pathnex/java-app", "Hello"]
